@@ -80,13 +80,32 @@ class NavigationBarTop extends StatelessWidget {
 class WardrobeItems extends StatelessWidget {
   const WardrobeItems({super.key});
 
-  static const List<String> _labels = [
-    'Casual Shirts',
-    'Denim Jeans',
-    'Coats',
-    'Sweaters',
-    'Shoes',
-    'Accessories',
+  /// Each entry is a [Map] with string keys — not [List<String>].
+  static const List<Map<String, String>> items = [
+    {
+      'imgUrl': 'lib/assets/images/cassualimg.png',
+      'itemName': 'Casual Shirts',
+    },
+    {
+      'imgUrl': 'lib/assets/images/denimjeans.png',
+      'itemName': 'Denim Jeans',
+    },
+    {
+      'imgUrl': 'lib/assets/images/coat.png',
+      'itemName': 'Coats',
+    },
+    {
+      'imgUrl': 'lib/assets/images/sweaters.png',
+      'itemName': 'Sweaters',
+    },
+    {
+      'imgUrl': 'lib/assets/images/shoes.png',
+      'itemName': 'Shoes',
+    },
+    {
+      'imgUrl': 'lib/assets/images/shoes.png',
+      'itemName': 'Accessories',
+    },
   ];
 
   @override
@@ -95,9 +114,32 @@ class WardrobeItems extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      children: _labels
-          .map((item) => Card(child: Center(child: Text(item))))
-          .toList(),
+      children: items.map((item) {
+        final path = item['imgUrl']!;
+        final title = item['itemName']!;
+        return Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Image.asset(
+                  path,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Center(
+                    child: Icon(Icons.broken_image_outlined),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(child: Text(title)),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }
+
