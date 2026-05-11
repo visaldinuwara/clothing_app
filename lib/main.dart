@@ -70,8 +70,34 @@ class NavigationBarTop extends StatelessWidget {
         children: [
           NavigationMenu(),
           SearchBar(),
+          WardrobeItems(),
         ],
       ),
+    );
+  }
+}
+
+class WardrobeItems extends StatelessWidget {
+  const WardrobeItems({super.key});
+
+  static const List<String> _labels = [
+    'Casual Shirts',
+    'Denim Jeans',
+    'Coats',
+    'Sweaters',
+    'Shoes',
+    'Accessories',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: _labels
+          .map((item) => Card(child: Center(child: Text(item))))
+          .toList(),
     );
   }
 }
