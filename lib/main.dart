@@ -19,20 +19,60 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Menu labels only (no [Scaffold] — the screen owns one scaffold).
+/// Top links — opens a full-screen page (replace [DetailPage] body with your UI).
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
+  void _open(BuildContext context, String title) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => DetailPage(title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        Text('My Wardrobe'),
-        Text('Collection'),
-        Text('Outfit'),
-        Text('Calendar'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        spacing: 4,
+        runSpacing: 4,
+        children: [
+          TextButton(
+            onPressed: () => _open(context, 'Collection'),
+            child: const Text('Collection'),
+          ),
+          TextButton(
+            onPressed: () => _open(context, 'Outfit'),
+            child: const Text('Outfit'),
+          ),
+          TextButton(
+            onPressed: () => _open(context, 'Calendar'),
+            child: const Text('Calendar'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Text(
+          'Replace this with your $title screen.',
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
@@ -63,21 +103,23 @@ class NavigationBarTop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My app'),
+        title: const Text('My Wardrobe'),
       ),
-      body: const Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          NavigationMenu(),
-          SearchBar(),
-          WardrobeItems(),
+          const NavigationMenu(),
+          const SearchBar(),
+          Expanded(
+            child: WardrobeItems(),
+          ),
         ],
       ),
     );
   }
 }
 
-class WardrobeItems extends StatelessWidget {
+class WardrobeItems extends StatefulWidget {
   const WardrobeItems({super.key});
 
   /// Each entry is a [Map] with string keys — not [List<String>].
@@ -103,21 +145,41 @@ class WardrobeItems extends StatelessWidget {
       'itemName': 'Shoes',
     },
     {
-      'imgUrl': 'lib/assets/images/shoes.png',
+      'imgUrl': 'lib/assets/images/accessories.png',
       'itemName': 'Accessories',
     },
   ];
 
   @override
+  State<WardrobeItems> createState() => _WardrobeItemsState();
+}
+
+class _WardrobeItemsState extends State<WardrobeItems> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return Scrollbar(
+      controller: _scrollController,
+      thumbVisibility: true,
+      child: GridView.count(
+        controller: _scrollController,
       crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: items.map((item) {
+      padding: const EdgeInsets.all(8),
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      childAspectRatio: 0.82,
+      children: WardrobeItems.items.map((item) {
         final path = item['imgUrl']!;
         final title = item['itemName']!;
         return Card(
+          key: ValueKey('$title|$path'),
           clipBehavior: Clip.antiAlias,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,8 +187,9 @@ class WardrobeItems extends StatelessWidget {
               Expanded(
                 child: Image.asset(
                   path,
+                  key: ValueKey(path),
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Center(
+                  errorBuilder: (context, error, stackTrace) => const Center(
                     child: Icon(Icons.broken_image_outlined),
                   ),
                 ),
@@ -139,6 +202,7 @@ class WardrobeItems extends StatelessWidget {
           ),
         );
       }).toList(),
+      ),
     );
   }
 }
