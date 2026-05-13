@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'app_routes.dart';
+import 'calendar_page.dart';
+import 'collection_page.dart';
+import 'outfit_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,22 +19,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const NavigationBarTop(),
+      initialRoute: AppRoutes.home,
+      routes: {
+        AppRoutes.home: (_) => const NavigationBarTop(),
+        AppRoutes.collection: (_) => const CollectionPage(),
+        AppRoutes.outfit: (_) => const OutfitPage(),
+        AppRoutes.calendar: (_) => const CalendarPage(),
+      },
     );
   }
 }
 
-/// Top links — opens a full-screen page (replace [DetailPage] body with your UI).
+/// Top links — uses [Navigator.pushNamed] with [AppRoutes].
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
-
-  void _open(BuildContext context, String title) {
-    Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (_) => DetailPage(title: title),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,37 +44,24 @@ class NavigationMenu extends StatelessWidget {
         runSpacing: 4,
         children: [
           TextButton(
-            onPressed: () => _open(context, 'Collection'),
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.collection);
+            },
             child: const Text('Collection'),
           ),
           TextButton(
-            onPressed: () => _open(context, 'Outfit'),
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.outfit);
+            },
             child: const Text('Outfit'),
           ),
           TextButton(
-            onPressed: () => _open(context, 'Calendar'),
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.calendar);
+            },
             child: const Text('Calendar'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class DetailPage extends StatelessWidget {
-  const DetailPage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text(
-          'Replace this with your $title screen.',
-          textAlign: TextAlign.center,
-        ),
       ),
     );
   }
