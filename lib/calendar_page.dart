@@ -34,11 +34,18 @@ class _CalendarPageState extends State<CalendarPage> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 10),
-            TextButton(
+            OutlinedButton(
               onPressed: () {
                 print("Button pressed for date: $_selected");
               },
-              child: const Text('Select Outfit'),
+              style: OutlinedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFFDD0), // Cream color
+                side: const BorderSide(color: Colors.black, width: 1),
+              ),
+              child: const Text(
+                'Select Outfit',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         ),
