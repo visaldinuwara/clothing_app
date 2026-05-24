@@ -1,11 +1,9 @@
-class CasualShirts extends StatefullWidget {
-    @override
-    State<CasualShirts> createState() => _CasualShirtsState();
-}
+import 'package:flutter/material.dart';
 
-class _CasualShirtsState extends State<CasualShirts> {
-    @override
-    Widget build(BuildContext context) {
-        return const Placeholder();
-    }
+class CasualShirts extends StatelessWidget {
+  const CasualShirts({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: Text('Casual Shirts')));
+  }
 }

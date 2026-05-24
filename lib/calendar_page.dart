@@ -1,3 +1,4 @@
+import 'package:clothing_app/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -14,16 +15,14 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Calendar')),
-      // Fixed: Spelling corrected to SingleChildScrollView
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         child: Column(
           children: [
             CalendarDatePicker(
               initialDate: _selected,
               firstDate: DateTime(2020),
               lastDate: DateTime(2030, 12, 31),
-              // Optional: Defines the starting view (days or years)
-              initialCalendarMode: DatePickerMode.day, 
+              initialCalendarMode: DatePickerMode.day,
               onDateChanged: (value) {
                 setState(() => _selected = value);
               },
@@ -36,7 +35,7 @@ class _CalendarPageState extends State<CalendarPage> {
             const SizedBox(height: 10),
             OutlinedButton(
               onPressed: () {
-                print("Button pressed for date: $_selected");
+                Navigator.of(context).pushNamed(AppRoutes.collection);
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color(0xFFFFFDD0), // Cream color
