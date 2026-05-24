@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class WardrobeItems extends StatefulWidget {
   const WardrobeItems({super.key});
 
-  /// Each entry is a [Map] with string keys — not [List<String>].
   static const List<Map<String, String>> items = [
     {
       'imgUrl': 'lib/assets/images/cassualimg.png',
@@ -72,7 +71,6 @@ class _WardrobeItemsState extends State<WardrobeItems> {
             key: ValueKey('$title|$path|$routeName'),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
-              // <--- Move InkWell to here
               onTap: () {
                 Navigator.of(context).pushNamed(routeName);
               },

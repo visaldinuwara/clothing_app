@@ -5,7 +5,6 @@ class OutfitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dummy dataset mimicking your product collection
     final List<Map<String, String>> outfits = [
       {'name': 'Casual Denim Pack', 'type': 'Shirt + Jeans'},
       {'name': 'Summer Classic', 'type': 'Linen Shirt'},
@@ -14,20 +13,16 @@ class OutfitPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Outfit'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Select Outfit'), elevation: 0),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        // GridView.builder lazily renders items exactly like a RecycleView or virtual list
         child: GridView.builder(
           itemCount: outfits.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,       // 2 items per row
-            crossAxisSpacing: 12,    // Horizontal spacing between cards
-            mainAxisSpacing: 12,     // Vertical spacing between rows
-            childAspectRatio: 0.8,   // Adjusts the width-to-height ratio of cards
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 0.8,
           ),
           itemBuilder: (context, index) {
             final item = outfits[index];
@@ -39,19 +34,23 @@ class OutfitPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top section placeholder for your clothing images
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
                       ),
                       child: const Center(
-                        child: Icon(Icons.checkroom, size: 40, color: Colors.grey),
+                        child: Icon(
+                          Icons.checkroom,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
-                  // Bottom text section of the clothing card
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -66,11 +65,14 @@ class OutfitPage extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           item['type']!,
-                          style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             );

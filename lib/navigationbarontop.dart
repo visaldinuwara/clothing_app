@@ -2,7 +2,6 @@ import 'package:clothing_app/navigationtopmenu.dart';
 import 'package:clothing_app/wardrobe_items.dart';
 import 'package:flutter/material.dart';
 
-/// One [MaterialApp] → one root screen → one [Scaffold]. Body stacks menu row, then search.
 class NavigationBarTop extends StatelessWidget {
   const NavigationBarTop({super.key});
 
