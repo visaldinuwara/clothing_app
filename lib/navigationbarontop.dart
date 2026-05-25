@@ -1,9 +1,18 @@
+import 'package:clothing_app/marketfeedpage.dart';
 import 'package:clothing_app/navigationtopmenu.dart';
-import 'package:clothing_app/wardrobe_items.dart';
 import 'package:flutter/material.dart';
+import 'package:clothing_app/customsearchbar.dart';
 
-class NavigationBarTop extends StatelessWidget {
+class NavigationBarTop extends StatefulWidget {
   const NavigationBarTop({super.key});
+
+  @override
+  State<NavigationBarTop> createState() => _NavigationBarTopState();
+}
+
+class _NavigationBarTopState extends State<NavigationBarTop> {
+  String activeSearchQuery = "";
+  String activeItemCategoryUrl = "men's clothing";
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +22,20 @@ class NavigationBarTop extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const NavigationMenu(),
-          const SearchBar(),
-          Expanded(child: WardrobeItems()),
+          CustomSearchBar(
+            onSearchChanged: (liveText) {
+              setState(() {
+                activeSearchQuery = liveText;
+              });
+            },
+          ),
+
+          Expanded(
+            child: MarketFeedPage(
+              itemUrl: activeItemCategoryUrl,
+              searchQuery: activeSearchQuery,
+            ),
+          ),
         ],
       ),
     );
