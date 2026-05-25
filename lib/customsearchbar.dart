@@ -40,7 +40,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         children: [
           TextField(
             controller: _controller,
-            onChanged: _onTextChanged, // Connect to text tracking logic
+            onChanged: _onTextChanged,
             decoration: InputDecoration(
               hintText: 'Search…',
               prefixIcon: const Icon(Icons.search),
@@ -48,7 +48,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 icon: const Icon(Icons.clear),
                 onPressed: () {
                   _controller.clear();
-                  widget.onSearchChanged(""); // Clear search filter safely
+                  widget.onSearchChanged("");
                 },
               ),
               border: const OutlineInputBorder(),

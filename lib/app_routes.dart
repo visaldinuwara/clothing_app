@@ -9,4 +9,5 @@ abstract final class AppRoutes {
   static const String sweaters = '/sweaters';
   static const String shoes = '/shoes';
   static const String accessories = '/accessories';
+  static const String addcollectionitem = '/addcollectionitem';
 }
