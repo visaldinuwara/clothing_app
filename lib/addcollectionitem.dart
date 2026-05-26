@@ -1,4 +1,6 @@
+import 'package:clothing_app/collectionitem.dart';
 import 'package:flutter/material.dart';
+import 'package:clothing_app/main.dart';
 
 class AddCollectionItem extends StatefulWidget {
   const AddCollectionItem({super.key});
@@ -8,7 +10,6 @@ class AddCollectionItem extends StatefulWidget {
 }
 
 class _AddCollectionItemState extends State<AddCollectionItem> {
-  // 1. Create controllers to capture the data from each text field
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
@@ -16,7 +17,6 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
 
   @override
   void dispose() {
-    // 2. Clean up controllers when the widget is closed to save phone memory
     _nameController.dispose();
     _imageUrlController.dispose();
     _colorController.dispose();
@@ -24,13 +24,13 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
     super.dispose();
   }
 
-  void _saveItem() {
-    // 3. This is where you grab the final string values to send to your backend/database
-    final String name = _nameController.text;
-    final String imageUrl = _imageUrlController.text;
-    final String color = _colorController.text;
-    final String category = _categoryController.text;
+  void _saveItem() async {
+    final String name = _nameController.text.trim();
+    final String imageUrl = _imageUrlController.text.trim();
+    final String color = _colorController.text.trim();
+    final String category = _categoryController.text.trim();
 
+    // Simple validation check
     if (name.isEmpty || imageUrl.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill out Name and Image URL')),
@@ -38,21 +38,52 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
       return;
     }
 
-    print('Saving Item: $name, $imageUrl, $color, $category');
-    // Your save/POST request logic goes here!
+    // 1. Create a new instance of your CollectionItem object and map the values
+    final newItem = CollectionItem()
+      ..name = name
+      ..imageUrl = imageUrl
+      ..color = color
+      ..category = category;
+
+    try {
+      // 2. Open a secure write transaction thread to push data safely to phone disk
+      // 2. Open a secure write transaction thread to push data safely to phone disk
+      await localDatabase.writeTxn(() async {
+        // FIXED: Change localDatabase.CollectionItemSchema.put(newItem);
+        // TO THIS:
+        await localDatabase.collectionItems.put(newItem);
+      });
+
+      // 3. Show a success notification alert to the user
+
+      // 3. Show a success notification alert to the user
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Saved to your collection box successfully!'),
+          ),
+        );
+        // 4. Automatically close the "Add" page and go back to the wardrobe page
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Database Error: $e')));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add Collection Item')),
-      // SingleChildScrollView protects your layout from keyboard overflow crashes
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Name Field
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -64,7 +95,6 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
             ),
             const SizedBox(height: 16),
 
-            // Image URL Field
             TextField(
               controller: _imageUrlController,
               keyboardType: TextInputType.url,
@@ -77,7 +107,6 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
             ),
             const SizedBox(height: 16),
 
-            // Color Field
             TextField(
               controller: _colorController,
               decoration: const InputDecoration(
@@ -89,7 +118,6 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
             ),
             const SizedBox(height: 16),
 
-            // Category Field
             TextField(
               controller: _categoryController,
               decoration: const InputDecoration(
@@ -101,14 +129,11 @@ class _AddCollectionItemState extends State<AddCollectionItem> {
             ),
             const SizedBox(height: 32),
 
-            // Save Outfit Button
             ElevatedButton(
               onPressed: _saveItem,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: const Color(
-                  0xFFFFFDD0,
-                ), // Matching your premium cream color
+                backgroundColor: const Color(0xFFFFFDD0),
                 foregroundColor: Colors.black,
                 side: const BorderSide(color: Colors.black, width: 1),
               ),

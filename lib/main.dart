@@ -8,12 +8,24 @@ import 'package:clothing_app/outfitpage.dart';
 import 'package:clothing_app/shoes.dart';
 import 'package:clothing_app/sweaters.dart';
 import 'package:flutter/material.dart';
+import 'package:isar_community/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'app_routes.dart';
 import 'calendar_page.dart';
 import 'collection_page.dart';
+import 'package:clothing_app/collectionitem.dart'; // This brings the generated schema along with it!
 
-void main() {
+late Isar localDatabase;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final dir = await getApplicationDocumentsDirectory();
+
+  // FIXED: Changed lowercase 'i' to capital 'I' to match your class name!
+  localDatabase = await Isar.open([CollectionItemSchema], directory: dir.path);
+
   runApp(const MyApp());
 }
 

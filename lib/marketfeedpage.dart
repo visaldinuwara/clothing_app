@@ -7,19 +7,17 @@ class MarketFeedPage extends StatefulWidget {
   const MarketFeedPage({
     super.key,
     required this.itemUrl,
-    required this.searchQuery, // FIXED: Added 'this.' to assign the incoming search string
+    required this.searchQuery,
   });
 
   final String itemUrl;
-  final String
-  searchQuery; // FIXED: Declared the property so the State block can read it
+  final String searchQuery;
 
   @override
   State<MarketFeedPage> createState() => _MarketFeedPageState();
 }
 
 class _MarketFeedPageState extends State<MarketFeedPage> {
-  // Store the active network request in memory to prevent infinite layout re-fetch loops
   late Future<List<Product>> _marketFetchFuture;
 
   @override
@@ -31,7 +29,6 @@ class _MarketFeedPageState extends State<MarketFeedPage> {
   @override
   void didUpdateWidget(covariant MarketFeedPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Automatically re-fetch the data ONLY if the category or search string changes!
     if (oldWidget.itemUrl != widget.itemUrl ||
         oldWidget.searchQuery != widget.searchQuery) {
       setState(() {
@@ -41,7 +38,6 @@ class _MarketFeedPageState extends State<MarketFeedPage> {
   }
 
   Future<List<Product>> fetchMarketClothes() async {
-    // FIXED: Cleaned up the URL path construction so it creates a valid endpoint address
     final cleanUrlSegment = Uri.encodeComponent(widget.itemUrl);
     final url = Uri.parse(
       'https://fakestoreapi.com/products/category/$cleanUrlSegment',
@@ -55,7 +51,6 @@ class _MarketFeedPageState extends State<MarketFeedPage> {
           .map((item) => Product.fromJson(item))
           .toList();
 
-      // Client-side text filter: Checks if the user has typed anything into the search box
       if (widget.searchQuery.isNotEmpty) {
         return products
             .where(
@@ -77,10 +72,8 @@ class _MarketFeedPageState extends State<MarketFeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Pro-tip: Remove the inner Scaffold AppBar if your parent layout already has one!
       body: FutureBuilder<List<Product>>(
-        future:
-            _marketFetchFuture, // FIXED: Pointing to memory instead of calling the function directly
+        future: _marketFetchFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
