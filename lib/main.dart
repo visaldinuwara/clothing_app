@@ -1,5 +1,6 @@
 import 'package:clothing_app/accessories.dart';
 import 'package:clothing_app/addcollectionitem.dart';
+import 'package:clothing_app/addoutfitpage.dart';
 import 'package:clothing_app/casual_shirts.dart';
 import 'package:clothing_app/coats.dart';
 import 'package:clothing_app/denim_jeans.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.sweaters: (_) => const Sweaters(),
         AppRoutes.shoes: (_) => const Shoes(),
         AppRoutes.addcollectionitem: (_) => const AddCollectionItem(),
+        AppRoutes.addoutfitpage: (_) => const NewOutfitScreen(),
       },
     );
   }

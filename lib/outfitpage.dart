@@ -1,3 +1,4 @@
+import 'package:clothing_app/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class OutfitPage extends StatelessWidget {
@@ -11,9 +12,23 @@ class OutfitPage extends StatelessWidget {
       {'name': 'Streetwear V1', 'type': 'Oversized Tee'},
       {'name': 'Formal Attire', 'type': 'Blazer Pack'},
     ];
-
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final DateTime dateTime = (args as DateTime?) ?? DateTime.now();
     return Scaffold(
-      appBar: AppBar(title: const Text('Select Outfit'), elevation: 0),
+      appBar: AppBar(
+        title: const Text('Select Outfit'),
+        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.addoutfitpage, arguments: dateTime);
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(

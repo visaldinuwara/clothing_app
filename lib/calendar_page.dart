@@ -35,7 +35,9 @@ class _CalendarPageState extends State<CalendarPage> {
             const SizedBox(height: 10),
             OutlinedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.collection);
+                Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.outfit, arguments: _selected);
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color(0xFFFFFDD0), // Cream color
